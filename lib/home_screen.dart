@@ -75,39 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         } else {
           print('Error adding the room.');
         }
-      }
-    }
-  }
 
-  Future<void> updateOpponentRoomId(String roomId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('user')
-          .doc(user.uid)
-          .get();
-      final roomId1 = userSnapshot['roomId'];
-
-      if (roomId1 != null && roomId1.isNotEmpty) {
-        final pro = Provider.of<QuizProvider>(context, listen: false);
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('user')
-            .doc(user.uid)
-            .get();
-        currentname = userSnapshot['name'];
-
-        roomDb.updateRoom(
-            RoomModel(
-                currentUserid: user.uid,
-                opponentUserid: useropponentId,
-                currentuserCorrect: pro.correct,
-                currentuserWrong: pro.wrong,
-                opponentuserCorrect: dbopponent.opponentcorrect,
-                opponentuserWrong: dbopponent.opponentwrong,
-                opponentname: useropponentName,
-                currentname: currentname),
-            roomId);
-      } else {
         // Query for users who are not the current user
         QuerySnapshot usersQuery = await FirebaseFirestore.instance
             .collection('user')
@@ -203,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
                             // Room has been initialized, you can join it now
-                            updateOpponentRoomId(roomId);
+
                             return const CircularProgressIndicator(
                               color: Colors.transparent,
                             );
